@@ -1,5 +1,4 @@
 templates = {}
-tile_base = 20
 
 function templates.get_templates_from_file( file )
 
@@ -9,15 +8,16 @@ function templates.get_templates_from_file( file )
 		for x = 0, string.len( line ) do
 			if string.sub( line, x, x ) == "N" then
 				for k,v in pairs( template ) do
-					print(v.block)
+--					print(v.block)
 				end
 				table.insert( templates, template )
 				y = 0
 			elseif string.sub( line, x, x ) == "1" then
-				table.insert( template, { block = 1, x = x*tile_base, y = y*tile_base } )
+				table.insert( template, { block = 1, x = x, y = y } )
 			elseif string.sub( line, x, x ) == "0" then
-				table.insert( template, { block = 0, x = x*tile_base, y = y*tile_base } )
+				table.insert( template, { block = 0, x = x, y = y } )
 			end
+--			print( x .. " " .. y )
 		end
 		y = y+1
 	end

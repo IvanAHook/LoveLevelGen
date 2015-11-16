@@ -8,13 +8,14 @@ function room.generate_room( room_type, room_x, room_y )
 	local room_offset_x = room_x * tile_base * ( room_w_h + 2 )
 	local room_offset_y = room_y * tile_base * ( room_w_h + 2 )
 	local current_room = get_template( 1 )
+	--generate_obstacles( current_room, 4, 4 )
 	--print( room_offset_x .. "  " .. room_offset_y )
 	--print( v.x * tile_base + room_x .. "  " .. v.y * tile_base + room_y )
-
+	--print( room_x .. " " .. room_y )
 	for k,v in pairs( current_room ) do
-		print( v.x * tile_base + room_x .. "  " .. v.y * tile_base + room_y )
-		v.x = v.x * tile_base + room_x --+ room_offset_x
-		v.y = v.y * tile_base + room_y --+ room_offset_y
+		--print( v.x * tile_base .. "  " .. v.y * tile_base )
+		v.x = v.x * tile_base-- + ( room_x * ( tile_base * room_w_h * 10 ) )
+		v.y = v.y * tile_base-- + room_y --+ room_offset_y
 		--print(v.block)
 	end
 
@@ -34,7 +35,6 @@ end
 
 function get_template( type )
 	local current_template = templates.get_template( 1 )
-	generate_obstacles( current_template, 4, 4 )
 	return current_template
 end
 

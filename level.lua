@@ -14,11 +14,18 @@ function level.update(dt)
 end
 
 function level.generate_level( rooms_x, rooms_y )
-	for k in pairs( level.rooms ) do level.rooms[k] = nil end
+--	for k in pairs( level.rooms ) do level.rooms[k] = nil end
+	for i = 1, #level.rooms do
+		for k in pairs( level.rooms[i] ) do
+			level.rooms[i][k] = nil
+		end
+	end
+	--print( rooms_x -1 .. " " .. rooms_y -1 )
 
 	for x = 0, rooms_x-1 do
 		for y = 0, rooms_y-1 do
-			local room = room.generate_room( love.math.random( 1, 3 ), x*160, y*160 )
+			--print( x .. " " .. y )
+			local room = room.generate_room( love.math.random( 1, 3 ), x, y )
 			table.insert( level.rooms, room )
 		end
 	end
@@ -39,9 +46,9 @@ end
 function level.draw()
 	for i = 1, #level.rooms do
 		for k,v in pairs( level.rooms[i] ) do
-			--print( v.block .. "  " .. v.x .. "  " .. v.y )
+			print( v.block .. "  " .. v.x .. "  " .. v.y )
 			love.graphics.setColor( 0, 255, 255, 255 )
-			love.graphics.print( v.block, v.x, v.y, 1, 1, 1, 0, 0, 0 )
+			love.graphics.print( v.block, v.x, v.y, 1, 1, 1, 1, 0, 0 )
 		end
 	end
 end

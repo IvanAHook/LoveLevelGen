@@ -1,54 +1,62 @@
 require "templates"
 
 room = {}
-tile_base = 2
-room_w_h = 8
+
+tile_base = 20
+room_w_h = 8*tile_base
 
 function room.generate_room( room_type, room_x, room_y )
-	local room_offset_x = room_x * tile_base * ( room_w_h + 2 )
-	local room_offset_y = room_y * tile_base * ( room_w_h + 2 )
-	local current_room = get_template( 1 )
-	--generate_obstacles( current_room, 4, 4 )
-	--print( room_offset_x .. "  " .. room_offset_y )
-	--print( v.x * tile_base + room_x .. "  " .. v.y * tile_base + room_y )
-	--print( room_x .. " " .. room_y )
-	for k,v in pairs( current_room ) do
-		--print( v.x * tile_base .. "  " .. v.y * tile_base )
-		v.x = v.x * tile_base-- + ( room_x * ( tile_base * room_w_h * 10 ) )
-		v.y = v.y * tile_base-- + room_y --+ room_offset_y
-		--print(v.block)
+	local room_offset_x = room_x*room_w_h
+	local room_offset_y = room_y*room_w_h
+	local objects = {}
+	local template = templates.get_template( 0 )
+
+	generate_obstacles( template, 3, 3 )
+
+	for k,v in pairs( template ) do
+		if v.block == 1 then
+			local block = {}
+			block.body = love.physics.newBody( world, v.x*tile_base+tile_base/2+room_offset_x, v.y*tile_base+tile_base/2+room_offset_y )
+			block.shape = love.physics.newRectangleShape( 0, 0, tile_base, tile_base )
+			block.fixture = love.physics.newFixture( block.body, block.shape )
+			block.color = { 0, 0, 0 }
+			table.insert( objects, block )
+		end
+		if v.block == 2 then
+			local block = {}
+			block.body = love.physics.newBody( world, v.x*tile_base+tile_base/2+room_offset_x, v.y*tile_base+tile_base/2+room_offset_y, "dynamic" )
+			block.shape = love.physics.newRectangleShape( 0, 0, tile_base, tile_base )
+			block.fixture = love.physics.newFixture( block.body, block.shape, 1 )
+			block.color = { 50, 255, 50 }
+			block.fixture:setRestitution(0)
+            block.fixture:setFriction(1)
+			table.insert( objects, block )
+		end
+		if v.block == "L" then
+			local block = {}
+			block.body = love.physics.newBody( world, v.x*tile_base+tile_base/2+room_offset_x, v.y*tile_base+tile_base/2+room_offset_y )
+			block.shape = love.physics.newRectangleShape( 0, 0, tile_base, tile_base )
+			block.fixture = love.physics.newFixture( block.body, block.shape )
+			block.color = { 255, 50, 50 }
+			table.insert( objects, block )
+		end
+
 	end
 
---	for x = 0, room_w_h do
---		for y = 0, room_w_h do
---			if x == 0 or x == room_w_h or y == 0 or y == room_w_h then	
---				table.insert( current_room,
---					{ block = room_type, x = x * tile_base + room_offset_x, y = y * tile_base + room_offset_y } )
---			else
---				table.insert( current_room,
---					{ block = 0, x = x * tile_base + room_offset_x, y = y * tile_base + room_offset_y } )
---			end
---		end
---	end
-	return current_room
-end
-
-function get_template( type )
-	local current_template = templates.get_template( 1 )
-	return current_template
+	return objects
 end
 
 function generate_obstacles( room, x, y )
-	for neighbour_x = x-1, x+1 do
-		for neighbour_y = y-1, y+1 do
+	for neighbour_x = x, x+1 do
+		for neighbour_y = y, y+1 do
 
-			local rand_int = love.math.random( 0, 2 )
+			local rand_int = love.math.random( 0, 3 )
 
 			if rand_int == 1 then
 
 				for k,v in pairs( room ) do
-					if v.x == neighbour_x and v.y == neighbour_y then
-						v.block = 1
+					if v.x == neighbour_x and v.y == neighbour_y and v.block == 0 then
+						v.block = 2
 					end
 				end
 
@@ -56,4 +64,5 @@ function generate_obstacles( room, x, y )
 
 		end
 	end
+	return room
 end

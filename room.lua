@@ -26,7 +26,7 @@ function room.generate_room( room_type, room_x, room_y )
 			local block = {}
 			block.body = love.physics.newBody( world, v.x*tile_base+tile_base/2+room_offset_x, v.y*tile_base+tile_base/2+room_offset_y, "dynamic" )
 			block.shape = love.physics.newRectangleShape( 0, 0, tile_base, tile_base )
-			block.fixture = love.physics.newFixture( block.body, block.shape, 1 )
+			block.fixture = love.physics.newFixture( block.body, block.shape )
 			block.color = { 50, 255, 50 }
 			block.fixture:setRestitution(0)
             block.fixture:setFriction(1)
@@ -46,7 +46,7 @@ function room.generate_room( room_type, room_x, room_y )
 	return objects
 end
 
-function generate_obstacles( room, x, y )
+function generate_obstacles( template, x, y )
 	for neighbour_x = x, x+1 do
 		for neighbour_y = y, y+1 do
 
@@ -54,7 +54,7 @@ function generate_obstacles( room, x, y )
 
 			if rand_int == 1 then
 
-				for k,v in pairs( room ) do
+				for k,v in pairs( template ) do
 					if v.x == neighbour_x and v.y == neighbour_y and v.block == 0 then
 						v.block = 2
 					end
@@ -64,5 +64,21 @@ function generate_obstacles( room, x, y )
 
 		end
 	end
-	return room
+	return template
+end
+
+function new_block( x, y, color, block_type, ... )
+	local block = {}
+	block.body = love.physics.newBody( world, x, y, block_type )
+	block.shape = love.physics.newRectangleShape( 0, 0, tile_base, tile_base )
+	block.fixture = love.physics.newFixture( block.body, block.shape )
+	block.color = color
+
+	if #arg > 0 then
+		block.fixture:setRestitution(arg[1])
+    	block.fixture:setFriction(arg[2])
+	end 
+
+	return block
+
 end

@@ -28,7 +28,6 @@ end
 
 function love.keypressed( key )
 	if key == "r" then
-        for k, v in pairs( world:getBodyList() ) do v:destroy() end
 		level.generate_level( 4, 2 )
 	end
 end

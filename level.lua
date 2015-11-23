@@ -19,7 +19,7 @@ function level.generate_level( rooms_x, rooms_y )
 
 	for x = 0, rooms_x-1 do
 		for y = 0, rooms_y-1 do
-			local room = room.generate_room( love.math.random( 1, 3 ), x, y )
+			local room = room.generate_room( tonumber( love.math.random( 1, 3 ) ), x, y )
 			table.insert( level.rooms, room )
 		end
 	end

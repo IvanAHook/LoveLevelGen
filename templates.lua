@@ -1,4 +1,8 @@
-templates = {}
+templates = {
+    ["1"] = {},
+    ["2"] = {},
+    ["3"] = {}
+}
 
 function templates.get_templates_from_file( file )
 
@@ -7,7 +11,8 @@ function templates.get_templates_from_file( file )
 	for line in love.filesystem.lines( file ) do
 		for x = 0, string.len( line ) do
 			if string.sub( line, x, x ) == "N" then
-				table.insert( templates, template )
+                local room_type = string.sub( line, x+1, x+1 )
+				table.insert( templates[ room_type ], template )
 				template = {}
 				y = 0
 			elseif string.sub( line, x, x ) == "1" then
@@ -27,6 +32,6 @@ function templates.get_templates_from_file( file )
 
 end
 
-function templates.get_template( type )
-	return templates[ love.math.random( 1, #templates ) ]
+function templates.get_template( room_type )
+	return templates[ room_type ][ love.math.random( 1, #templates[ room_type ] ) ]
 end

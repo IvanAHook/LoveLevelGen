@@ -16,6 +16,10 @@ function templates.get_templates_from_file( file )
 				table.insert( template, { block = 0, x = x, y = y } )
 			elseif string.sub( line, x, x ) == "L" then
 				table.insert( template, { block = "L", x = x, y = y } )
+			elseif string.sub( line, x, x ) == "R" then
+				table.insert( template, { block = "R", x = x, y = y } )
+			elseif string.sub( line, x, x ) == "X" then
+				table.insert( template, { block = "X", x = x, y = y } )
 			end
 		end
 		y = y+1

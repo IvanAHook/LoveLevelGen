@@ -3,6 +3,8 @@ io.stdout:setvbuf("no")
 require "level"
 require "templates"
 
+level_x = 4
+level_y = 4
 
 function love.load()
     flags = {}
@@ -13,7 +15,7 @@ function love.load()
     flags.display = 1
     flags.centered = true
     love.window.setTitle( "PCG" )
-    success = love.window.setMode( 800, 600, flags )	
+    success = love.window.setMode( 800, 800, flags )	
 
     love.graphics.setBackgroundColor( 255, 255, 255 )
 
@@ -22,13 +24,14 @@ function love.load()
 
 	templates.get_templates_from_file( "templates.txt" )
 
-    level.generate_level( 4, 2 )
+    level.generate_level( level_x, level_y )
 
 end
 
 function love.keypressed( key )
 	if key == "r" then
-		level.generate_level( 4, 2 )
+        for k, v in pairs( world:getBodyList() ) do v:destroy() end
+		level.generate_level( level_x, level_y )
 	end
 end
 

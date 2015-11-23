@@ -15,6 +15,7 @@ function templates.get_templates_from_file( file )
 				table.insert( templates[ room_type ], template )
 				template = {}
 				y = 0
+				break
 			elseif string.sub( line, x, x ) == "1" then
 				table.insert( template, { block = 1, x = x, y = y } )
 			elseif string.sub( line, x, x ) == "0" then

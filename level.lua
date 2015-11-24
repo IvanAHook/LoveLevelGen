@@ -4,16 +4,24 @@ require "templates"
 
 level = {}
 level.rooms = { --make function to get index in 2d grid
-				--[[0, 0, 0, 0,
-				0, 0, 0, 0,
-				0, 0, 0, 0,
-				0, 0, 0, 0,]]
+				--[[0, 0, 0, 0,  -- 1, 2, 3, 4,
+				0, 0, 0, 0,  --	5, 6, 7, 8,
+				0, 0, 0, 0,  --	9, 10, 11, 12,
+				0, 0, 0, 0]] --	13, 14, 15, 16
 	 			}
+
+--local room = love.math.random( 1, 4 )
+--local room_type = love.math.random( 1, 5 )
+--get_room( room , 1 ) = function() if room_type == 5 then return 2 else return 1 end end
 
 function level.load()
 end
 
 function level.update(dt)
+end
+
+function get_room( x, y )
+	return level.rooms[ x + 4*(y-1) ]
 end
 
 function level.generate_level( rooms_x, rooms_y )

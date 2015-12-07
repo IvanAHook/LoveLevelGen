@@ -6,7 +6,7 @@ tile_base = 32
 room_w_h = 8*tile_base
 box_img = love.graphics.newImage( "assets/img/crate.jpg" )
 stone_img = love.graphics.newImage( "assets/img/stone.jpg" )
---stone_img = {} -- get random tiling stone img 
+--stone_img = {} -- get random tiling stone img
 
 function room.generate_room( room_type, room_x, room_y )
 	local room_offset_x = room_x*room_w_h
@@ -19,7 +19,7 @@ function room.generate_room( room_type, room_x, room_y )
             table.insert( objects,
                 new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 255, 255 }, stone_img ) )
 		elseif v.block == 2 then
-			table.insert( objects,	
+			table.insert( objects,
             	new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "dynamic", { 255, 255, 255 }, box_img, 0, 1 ) )
 		elseif  v.block == "L" then
             table.insert( objects,

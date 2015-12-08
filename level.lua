@@ -12,7 +12,10 @@ level.rooms = { --make function to get index in 2d grid
 
 --local room = love.math.random( 1, 4 )
 --local room_type = love.math.random( 1, 5 )
+--local direction = love.math.random( 1, 5 )
 --get_room( room , 1 ) = function() if room_type == 5 then return 2 else return 1 end end
+
+
 
 function level.load()
 end
@@ -22,6 +25,29 @@ end
 
 function get_room( x, y )
 	return level.rooms[ x + 4*(y-1) ]
+end
+
+function level.generate_solution_path( rooms_x, rooms_y )
+	for k, v in pairs(level.rooms) do level.rooms[k] = nil end
+
+    local y = 1
+    local x = love.math.random( 1, 4 )
+    local direction
+    get_room( x, y ) = room.generate_room( "1" , x, y )
+
+    while y <= 4 do
+        if x == 4 then
+            direction == 5
+        else
+            direction = love.math.random( 1, 5 )
+        end
+
+        get_room( x, y ) = room.generate_room( "1" , x, y )
+
+        if direction == 5 then
+            y = y+1
+        end
+    end
 end
 
 function level.generate_level( rooms_x, rooms_y )

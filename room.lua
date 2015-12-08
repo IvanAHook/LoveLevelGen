@@ -5,7 +5,7 @@ room = {}
 tile_base = 32
 room_w_h = 8*tile_base
 box_img = love.graphics.newImage( "assets/img/crate.jpg" )
-stone_img = love.graphics.newImage( "assets/img/stone.jpg" )
+stone_img = { love.graphics.newImage( "assets/img/stone.jpg" ), love.graphics.newImage( "assets/img/stone_gold.jpg" ) }
 --stone_img = {} -- get random tiling stone img 
 
 function room.generate_room( room_type, room_x, room_y )
@@ -17,13 +17,13 @@ function room.generate_room( room_type, room_x, room_y )
 	for k,v in pairs( template ) do
 		if v.block == 1 then
             table.insert( objects,
-                new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 255, 255 }, stone_img ) )
+                new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 255, 255 }, stone_img[ love.math.random( 1, 2 ) ] ) )
 		elseif v.block == 2 then
 			table.insert( objects,	
             	new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "dynamic", { 255, 255, 255 }, box_img, 0, 1 ) )
 		elseif  v.block == "L" then
             table.insert( objects,
-                new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 50, 50 }, stone_img ) )
+                new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 50, 50 }, stone_img[ love.math.random( 1, 2 ) ] ) )
 		elseif v.block == "R" then
 
             local rand_int = nil
@@ -33,7 +33,7 @@ function room.generate_room( room_type, room_x, room_y )
                     new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "dynamic", { 255, 255, 255 }, box_img, 0, 1 ) )
             else
                 table.insert( objects,
-                    new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 50, 255 }, stone_img ) )
+                    new_block( tile_base*( v.x + 0.5 )+room_offset_x, tile_base*( v.y + 0.5 )+room_offset_y, "static", { 255, 50, 255 }, stone_img[ love.math.random( 1, 2 ) ] ) )
             end
 
         end

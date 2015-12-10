@@ -3,19 +3,13 @@ require "room"
 require "templates"
 
 level = {}
-level.rooms = { --make function to get index in 2d grid
-				--[[0, 0, 0, 0,  -- 1, 2, 3, 4,
-				0, 0, 0, 0,  --	5, 6, 7, 8,
-				0, 0, 0, 0,  --	9, 10, 11, 12,
-				0, 0, 0, 0]] --	13, 14, 15, 16
+level.rooms = {}
+level.rooms_template = { --make function to get index in 2d grid
+				"0", "0", "0", "0",  -- 1, 2, 3, 4,
+				"0", "0", "0", "0",  --	5, 6, 7, 8,
+				"0", "0", "0", "0",  --	9, 10, 11, 12,
+				"0", "0", "0", "0" --	13, 14, 15, 16
 	 			}
-
---local room = love.math.random( 1, 4 )
---local room_type = love.math.random( 1, 5 )
---local direction = love.math.random( 1, 5 )
---get_room( room , 1 ) = function() if room_type == 5 then return 2 else return 1 end end
-
-
 
 function level.load()
 end
@@ -23,39 +17,49 @@ end
 function level.update(dt)
 end
 
-function get_room( x, y )
-	return level.rooms[ x + 4*(y-1) ]
+function get_room_type( x, y )
+	return level.rooms_template[ x + 4*(y-1) ]
+end
+
+function get_room_index( x, y )
+	return x + 4*(y-1)
 end
 
 function level.generate_solution_path( rooms_x, rooms_y )
-	for k, v in pairs(level.rooms) do level.rooms[k] = nil end
+	for k, v in pairs(level.rooms_template) do level.rooms_template[k] = "0" end
 
     local y = 1
     local x = love.math.random( 1, 4 )
     local direction
-    get_room( x, y ) = room.generate_room( "1" , x, y )
+    level.rooms_template[ get_room_index( x, y ) ] = "1"
 
     while y <= 4 do
         if x == 4 then
-            direction == 5
+            direction = 5
         else
             direction = love.math.random( 1, 5 )
         end
 
-        get_room( x, y ) = room.generate_room( "1" , x, y )
-
         if direction == 5 then
+        	level.rooms_template[ get_room_index( x, y ) ] = "2"
             y = y+1
+        elseif direction == ( 1 or 2 ) then
+        	x = x-1
+        	level.rooms_template[ get_room_index( x, y ) ] = "1"
+        elseif direction == ( 3 or 4 ) then
+        	x = x+1
+        	level.rooms_template[ get_room_index( x, y ) ] = "1"
         end
     end
+	level.generate_level( rooms_x, rooms_y )
 end
 
 function level.generate_level( rooms_x, rooms_y )
 	for k, v in pairs(level.rooms) do level.rooms[k] = nil end
 
-	for x = 0, rooms_x-1 do
-		for y = 0, rooms_y-1 do
-			local room = room.generate_room( tostring( love.math.random( 1, 3 ) ), x, y )
+	for x = 1, rooms_x do
+		for y = 1, rooms_y do
+			local room = room.generate_room( get_room_type( x, y ), x, y )
 			table.insert( level.rooms, room )
 		end
 	end

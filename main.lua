@@ -15,7 +15,7 @@ function love.load()
     flags.display = 1
     flags.centered = true
     love.window.setTitle( "PCG" )
-    success = love.window.setMode( 800, 800, flags )	
+    success = love.window.setMode( 1200, 1000, flags )	
 
     love.graphics.setBackgroundColor( 255, 255, 255 )
 
@@ -24,14 +24,13 @@ function love.load()
 
 	templates.get_templates_from_file( "templates.txt" )
 
-    level.generate_level( level_x, level_y )
-
+    level.generate_solution_path( level_x, level_y )
 end
 
 function love.keypressed( key )
 	if key == "r" then
         for k, v in pairs( world:getBodyList() ) do v:destroy() end
-		level.generate_level( level_x, level_y )
+		level.generate_solution_path( level_x, level_y )
 	end
 end
 
